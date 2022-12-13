@@ -1,21 +1,19 @@
 package math
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
 
 func TestAbsolute(t *testing.T) {
 	result := Absolute(-5)
 
-	if result != 5 {
-		t.Logf("expect 5, but got %d", result)
-		t.Fail()
-	}
+	assert.Equal(t, 5, result, "expect 5, but got %d", result)
 }
 
 func TestAbsolute_WithPositiveNum(t *testing.T) {
 	result := Absolute(5)
 
-	if result != 5 {
-		t.Logf("expect 5, but got %d", result)
-		t.Fail()
-	}
+	assert.Equal(t, 5, result, "expect 5, but got %d", result)
 }
