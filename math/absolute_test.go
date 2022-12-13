@@ -17,3 +17,8 @@ func TestAbsolute(t *testing.T) {
 		assert.Equal(t, 5, result, "expect 5, but got %d", result)
 	})
 }
+
+func TestAbsolute_FlakyTest(t *testing.T) {
+	// skip untuk testing yg kadang berhasil kadang gagal entah kenapa
+	t.Skip()
+}
