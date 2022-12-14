@@ -23,6 +23,12 @@ func TestDefaultEngine_MaxSpeed(t *testing.T) {
 	}
 }
 
+type FakeEngine struct{}
+
+func (e FakeEngine) MaxSpeed() int {
+	return 5
+}
+
 func TestCar_Speed(t *testing.T) {
 	type fields struct {
 		Speeder Speeder
@@ -45,6 +51,13 @@ func TestCar_Speed(t *testing.T) {
 				Speeder: &TurboEngine{},
 			},
 			want: 80,
+		},
+		{
+			name: "speed should be 20, when maxspeed is less than 10",
+			fields: fields{
+				Speeder: &FakeEngine{},
+			},
+			want: 20,
 		},
 	}
 
