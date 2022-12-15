@@ -1,6 +1,11 @@
 package car
 
-import "testing"
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+)
 
 func TestDefaultEngine_MaxSpeed(t *testing.T) {
 	tests := []struct {
@@ -27,6 +32,47 @@ type FakeEngine struct{}
 
 func (e FakeEngine) MaxSpeed() int {
 	return 5
+}
+
+type MockEngine struct {
+	mock.Mock
+}
+
+func (m MockEngine) MaxSpeed() int {
+	args := m.Called()
+	return args.Get(0).(int)
+}
+
+func TestCar_Speed_WithMock(t *testing.T) {
+	t.Run("Called 1 Times", func(t *testing.T) {
+		mock := new(MockEngine)
+
+		car := NewCar(mock)
+
+		mock.On("MaxSpeed").Return(9).Times(1)
+
+		speed := car.Speed()
+		assert.Equal(t, 20, speed)
+
+		// untuk memastikan bahwa function MaxSpeed hanya dipanggil satu kali
+		// ketika memanggil function Speed di car
+		mock.AssertExpectations(t)
+	})
+
+	t.Run("Called 3 Times", func(t *testing.T) {
+		mock := new(MockEngine)
+
+		car := NewCar(mock)
+
+		mock.On("MaxSpeed").Return(70).Times(3)
+
+		speed := car.Speed()
+		assert.Equal(t, 70, speed)
+
+		// untuk memastikan bahwa function MaxSpeed hanya dipanggil satu kali
+		// ketika memanggil function Speed di car
+		mock.AssertExpectations(t)
+	})
 }
 
 func TestCar_Speed(t *testing.T) {
